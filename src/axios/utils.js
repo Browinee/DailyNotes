@@ -51,13 +51,13 @@ export function cacheAdapterEnhancer(adapter, options) {
     } = options;
     return (config) => {
         const { url, method, params, forceUpdate } = config;
-        let useCache =
+        const useCache =
             config[cacheFlag] !== undefined && config[cacheFlag] !== null
                 ? config[cacheFlag]
                 : enabledByDefault;
         if (method === "get" && useCache) {
             const cache = isCacheLike(useCache) ? useCache : defaultCache;
-            let requestKey = generateReqKey(config);
+            const requestKey = generateReqKey(config);
             let responsePromise = cache.get(requestKey);
             if (!responsePromise || forceUpdate) {
                 responsePromise = (async () => {
