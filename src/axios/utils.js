@@ -29,19 +29,6 @@ export function generateReqKey(config) {
     );
 }
 
-export function isCacheLike(cache) {
-    return !!(
-        cache.set &&
-        cache.get &&
-        cache.delete &&
-        cache.clear &&
-        typeof cache.get === "function" &&
-        typeof cache.set === "function" &&
-        typeof cache.delete === "function" &&
-        typeof cache.clear === "function"
-    );
-}
-
 export function cacheAdapterEnhancer(adapter, options) {
     const {
         maxAge,
@@ -50,13 +37,14 @@ export function cacheAdapterEnhancer(adapter, options) {
         defaultCache = MemoryCache,
     } = options;
     return (config) => {
-        const { url, method, params, forceUpdate } = config;
+        const {  method, forceUpdate } = config;
+        console.log(config)
         const useCache =
             config[cacheFlag] !== undefined && config[cacheFlag] !== null
                 ? config[cacheFlag]
                 : enabledByDefault;
         if (method === "get" && useCache) {
-            const cache = isCacheLike(useCache) ? useCache : defaultCache;
+            const cache =  defaultCache;
             const requestKey = generateReqKey(config);
             let responsePromise = cache.get(requestKey);
             if (!responsePromise || forceUpdate) {
