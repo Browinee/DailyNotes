@@ -8,7 +8,6 @@ const instance = axios.create({
         maxAge: 5000,
     }),
 });
-
 async function requestWithCache() {
     const response = await instance.get("/todos/1", {cache: true});
     console.dir(response);
@@ -21,3 +20,6 @@ async function requestWithoutCache() {
 
 document.querySelector("#withCache").addEventListener("click", requestWithCache);
 document.querySelector("#withoutCache").addEventListener("click", requestWithoutCache);
+
+
+
