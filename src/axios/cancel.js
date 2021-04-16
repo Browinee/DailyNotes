@@ -10,6 +10,7 @@ function addPendingRequest(config) {
     config.cancelToken = config.cancelToken || new axios.CancelToken((cancel) => {
         if (!pendingRequest.has(requestKey)) {
             pendingRequest.set(requestKey, cancel);
+            console.log("addPendingRequest", pendingRequest, requestKey, config.cancelToken);
         }
     });
 }
@@ -42,15 +43,18 @@ instance.interceptors.response.use(
     (error) => {
         removePendingRequest(error.config || {}); // remove request from pendingRequest
         if (axios.isCancel(error)) {
-            console.log("已取消的重复请求：" + error.message);
+            console.log("已取消的：" + error.message);
         } else {
             // 添加异常处理
         }
         return Promise.reject(error);
 
     });
+
 async function sendRequest() {
+    // low netwok speed could see cancel more clearly
     const response = await instance.get("/todos/1");
     console.dir(response);
 }
+
 document.querySelector("#cancel").addEventListener("click", sendRequest);
