@@ -1,4 +1,4 @@
-import {Provider} from "./ioc/provider";
+import {Provider} from "../ioc/provider";
 
 @Provider('b', [10])
 export class B {
