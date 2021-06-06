@@ -16,6 +16,10 @@
         let firstDayWeekDay = firstDay.getDay();
         if (firstDayWeekDay === WEEK_DAYS.Sunday) firstDayWeekDay = WEEK_DAYS.Sunday_Offset;
 
+        //month 可以越界
+        year = firstDay.getFullYear();
+        month = firstDay.getMonth() +1;
+
         const lastDayOfLastMonth = new Date(year, month - 1, 0)
         let lastDateOfLastMonth = lastDayOfLastMonth.getDate();
 
