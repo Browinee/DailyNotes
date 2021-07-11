@@ -30,6 +30,7 @@
     "@koa/router": "^10.0.0",
     "@types/koa-router": "^7.4.4",
     "chrome-finder": "^1.0.7",
+    "fs-extra": "^10.0.0",
     "koa": "^2.13.1",
     "koa-static": "^5.0.0",
     "multer": "^1.4.2",
