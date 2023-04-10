@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://www.unpkg.com/axios@1.3.5/dist/axios.min.js"></script>
+  </head>
+  <body>
+    <img id="img" />
+
+    <script>
+      async function concurrencyDownload(path, size, chunkSize) {
+        const chunkNum = Math.ceil(size / chunkSize);
+
+        const downloadTask = [];
+        for (let i = 1; i <= chunkNum; i++) {
+          const rangeStart = chunkSize * (i - 1);
+          const rangeEnd = chunkSize * i - 1;
+
+          downloadTask.push(
+            axios.get(path, {
+              headers: {
+                Range: `bytes=${rangeStart}-${rangeEnd}`,
+              },
+              responseType: "arraybuffer",
+            })
+          );
+        }
+        const arrayBuffers = await Promise.all(
+          downloadTask.map((task) => {
+            return task.then((res) => res.data);
+          })
+        );
+        return mergeArrayBuffer(arrayBuffers);
+      }
+      function mergeArrayBuffer(arrays) {
+        let totalLen = 0;
+        for (const arr of arrays) {
+          totalLen += arr.byteLength;
+        }
+        let res = new Uint8Array(totalLen);
+        let offset = 0;
+        for (const arr of arrays) {
+          const uint8Arr = new Uint8Array(arr);
+          res.set(uint8Arr, offset);
+          offset += arr.byteLength;
+        }
+        return res.buffer;
+      }
+      (async function () {
+        const { data: len } = await axios.get("http://localhost:3000/length");
+        const res = await concurrencyDownload(
+          "http://localhost:3000",
+          len,
+          100
+        );
+        console.log(res);
+
+        const blob = new Blob([res]);
+        const url = URL.createObjectURL(blob);
+        img.src = url;
+      })();
+    </script>
+  </body>
+</html>
