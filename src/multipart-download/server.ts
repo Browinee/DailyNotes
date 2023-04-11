@@ -16,6 +16,7 @@ app.get("/", (req, res, next) => {
 
   // NOTE: this file is only 36k
   // we can try bigger one.
+  // @ts-ignore
   res.download("test.png", {
     acceptRanges: true,
   });
