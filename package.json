@@ -8,7 +8,8 @@
     "start:build": "tsc -w",
     "start:run": "nodemon build/index.js",
     "start": "concurrently npm:start:*",
-    "build": "cd ./src/webpack-chunk/ && webpack --config webpack.config.js"
+    "build": "cd ./src/webpack-chunk/ && webpack --config webpack.config.js",
+    "debug:webpack-chunk": "cd ./src/webpack-chunk/ && node --inspect ../../node_modules/webpack/bin/webpack.js"
   },
   "repository": {
     "type": "git",
