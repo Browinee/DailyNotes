@@ -11,6 +11,8 @@ const _ = require("lodash");
 function myPreprocessor(code, options) {
   const ast = parser.parse(code, {
     plugins: ["typescript", "jsx"],
+    // NOTE: if set sourceType script, it will
+    // consider you are in nodejs environment
     sourceType: "module",
   });
 
@@ -30,7 +32,8 @@ function myPreprocessor(code, options) {
   });
 
   const newImports = _.shuffle(importNodes);
-
+  // NOTE: in order to create new ast, we need
+  // to use types
   const newAST = types.file({
     type: "Program",
     body: newImports,
