@@ -6,7 +6,6 @@ class ChunkTestPlugin {
 	apply(compiler) {
 		const options = this.options;
 		const minSizeReduce = options.minSizeReduce || 1.5;
-
 		compiler.hooks.compilation.tap("ChunkTestPlugin", compilation => {
 			compilation.hooks.optimizeChunks.tap("ChunkTestPlugin", chunks => {
 
